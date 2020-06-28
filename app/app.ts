@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import {StravaActivityRestService} from "./strava/service/strava.activity.rest.service";
-import {StravaActivityTrackRestService} from "./strava/service/strava.activity.track.rest.service";
 
 const createError = require('http-errors');
 const express = require('express');
@@ -39,5 +37,3 @@ app.listen(3000, function () {
 
 
 module.exports = app;
-
-new StravaActivityTrackRestService();

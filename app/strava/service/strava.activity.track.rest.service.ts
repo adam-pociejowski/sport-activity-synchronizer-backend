@@ -8,10 +8,18 @@ export class StravaActivityTrackRestService extends StravaRestService<StravaActi
 
     constructor() {
         super();
-        this.getActivityTrack('3659125692')
-            .then((track: StravaActivityTrackPoint[]) => {
-                console.log(track);
-            })
+        // let client: MongoClient = mongoService.getClient();
+        // client.connect(function () {
+        //     let a = client.db('sport-activity');
+        //     let collection = a.collection('activity');
+        //     collection
+        //         .find({})
+        //         .toArray(
+        //             function (err, docs) {
+        //                 console.log(docs);
+        //             });
+        //     client.close();
+        // })
     }
 
     getActivityTrack = (id: string) =>
