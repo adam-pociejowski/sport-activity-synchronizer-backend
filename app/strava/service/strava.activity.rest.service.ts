@@ -6,10 +6,6 @@ export class StravaActivityRestService extends StravaRestService<StravaActivity>
 
     constructor() {
         super();
-        this.getActivity('3659125692')
-            .then((stravaActivity: StravaActivity) => {
-                console.log(stravaActivity);
-            })
     }
 
     getActivity = (id: string) =>
