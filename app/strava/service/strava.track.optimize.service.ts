@@ -1,6 +1,6 @@
 import { StravaActivityTrackPoint } from "../model/strava.activity.track.point.model";
 
-export class StravaOptimizeService {
+export class StravaTrackOptimizeService {
 
     public optimize = (track: StravaActivityTrackPoint[]) =>
         this.removePointsWithoutPositionChanged(

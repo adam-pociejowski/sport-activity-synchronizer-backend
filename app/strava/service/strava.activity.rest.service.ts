@@ -23,6 +23,7 @@ export class StravaActivityRestService extends StravaRestService<StravaActivity>
             data.distance,
             data.moving_time,
             data.elapsed_time,
+            data.type,
             new Date(data.start_date)
         )
 }

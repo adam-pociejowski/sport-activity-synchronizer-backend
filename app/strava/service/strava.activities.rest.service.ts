@@ -24,25 +24,8 @@ export class StravaActivitiesRestService extends StravaRestService<StravaActivit
                 element.distance,
                 element.moving_time,
                 element.elapsed_time,
+                element.type,
                 new Date(element.start_date)
             )
-        )
-
-    // getActivity = (id: string) =>
-    //     this.get(`activities/${id}`, new RequestArguments(
-    //         {},
-    //         {},
-    //         {
-    //             Authorization:  this.prepareAuthorizationHeader()
-    //         }));
-    //
-    // mapToResponseData = (data: any): StravaActivity =>
-    //     new StravaActivity(
-    //         data.id,
-    //         data.name,
-    //         data.distance,
-    //         data.moving_time,
-    //         data.elapsed_time,
-    //         new Date(data.start_date)
-    //     )
+        );
 }

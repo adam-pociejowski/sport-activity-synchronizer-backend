@@ -2,12 +2,12 @@ import { StravaActivitiesRestService } from "./strava.activities.rest.service";
 import { StravaActivityTrackRestService } from "./strava.activity.track.rest.service";
 import { MongoService } from "../../mongo/service/mongo.service";
 import { StravaActivity } from "../model/strava.activity.model";
-import { StravaOptimizeService } from "./strava.optimize.service";
+import { StravaTrackOptimizeService } from "./strava.track.optimize.service";
 
 export class StravaService extends MongoService<StravaActivity[]> {
     private stravaActivityTrackRestService = new StravaActivityTrackRestService();
     private stravaActivitiesRestService = new StravaActivitiesRestService();
-    private stravaOptimizeService = new StravaOptimizeService();
+    private stravaTrackOptimizeService = new StravaTrackOptimizeService();
 
     constructor() {
         super('activity', 'sport-activity');
@@ -31,7 +31,7 @@ export class StravaService extends MongoService<StravaActivity[]> {
                 throw new Error(`Number of activities in not equal to number of tracks. 
                                  Activities: ${activities.length}, tracks: ${tracks.length}`)
             }
-            activities[index].track = this.stravaOptimizeService.optimize(tracks[index]);
+            activities[index].track = this.stravaTrackOptimizeService.optimize(tracks[index]);
         }
         return activities;
     };
