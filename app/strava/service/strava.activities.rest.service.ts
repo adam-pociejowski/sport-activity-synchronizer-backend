@@ -1,6 +1,7 @@
 import { RequestArguments } from "../../core/model/request.arguments.model";
 import { StravaActivity } from "../model/strava.activity.model";
 import { StravaRestService } from "./strava.rest.service";
+import {MetricUtils} from "../../core/util/MetricUtils";
 
 export class StravaActivitiesRestService extends StravaRestService<StravaActivity[]> {
 
@@ -8,10 +9,13 @@ export class StravaActivitiesRestService extends StravaRestService<StravaActivit
         super();
     }
 
-    getActivities = () =>
+    getActivities = (page: number, pageSize: number) =>
         this.get(`athlete/activities`, new RequestArguments(
             {},
-            {},
+            {
+                per_page: pageSize,
+                page: page
+            },
             {
                 Authorization:  this.prepareAuthorizationHeader()
             }));
@@ -24,25 +28,10 @@ export class StravaActivitiesRestService extends StravaRestService<StravaActivit
                 element.distance,
                 element.moving_time,
                 element.elapsed_time,
+                element.type,
+                MetricUtils.metersPerSecToKilometersPerHour(element.average_speed),
+                MetricUtils.metersPerSecToKilometersPerHour(element.max_speed),
                 new Date(element.start_date)
             )
-        )
-
-    // getActivity = (id: string) =>
-    //     this.get(`activities/${id}`, new RequestArguments(
-    //         {},
-    //         {},
-    //         {
-    //             Authorization:  this.prepareAuthorizationHeader()
-    //         }));
-    //
-    // mapToResponseData = (data: any): StravaActivity =>
-    //     new StravaActivity(
-    //         data.id,
-    //         data.name,
-    //         data.distance,
-    //         data.moving_time,
-    //         data.elapsed_time,
-    //         new Date(data.start_date)
-    //     )
+        );
 }

@@ -1,4 +1,4 @@
-import {StravaActivityTrackPoint} from "./strava.activity.track.point.model";
+import { StravaActivityTrackPoint } from "./strava.activity.track.point.model";
 
 export class StravaActivity {
     constructor(public id: string,
@@ -6,6 +6,9 @@ export class StravaActivity {
                 public distance: number,
                 public movingTime: number,
                 public elapsedTime: number,
+                public type: string,
+                public averageSpeed: number,
+                public maxSpeed: number,
                 public startDate: Date,
                 public track: StravaActivityTrackPoint[] = []) {}
 }

@@ -3,23 +3,12 @@ import { StravaRestService } from "./strava.rest.service";
 import { StravaStreamType } from "../enums/strava.stream.type.enum";
 import { LocationData } from "../../core/model/location.model";
 import { RequestArguments } from "../../core/model/request.arguments.model";
+import {MetricUtils} from "../../core/util/MetricUtils";
 
 export class StravaActivityTrackRestService extends StravaRestService<StravaActivityTrackPoint[]> {
 
     constructor() {
         super();
-        // let client: MongoClient = mongoService.getClient();
-        // client.connect(function () {
-        //     let a = client.db('sport-activity');
-        //     let collection = a.collection('activity');
-        //     collection
-        //         .find({})
-        //         .toArray(
-        //             function (err, docs) {
-        //                 console.log(docs);
-        //             });
-        //     client.close();
-        // })
     }
 
     getActivityTrack = (id: string) =>
@@ -40,7 +29,7 @@ export class StravaActivityTrackRestService extends StravaRestService<StravaActi
                     this.findValueForStreamType(StravaStreamType.LOCATION, data, index),
                     this.findValueForStreamType(StravaStreamType.TIME, data, index),
                     this.findValueForStreamType(StravaStreamType.DISTANCE, data, index),
-                    this.findValueForStreamType(StravaStreamType.VELOCITY, data, index)
+                    MetricUtils.metersPerSecToKilometersPerHour(this.findValueForStreamType(StravaStreamType.VELOCITY, data, index))
                 )
             )
         }
