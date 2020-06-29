@@ -7,6 +7,8 @@ export class StravaActivity {
                 public movingTime: number,
                 public elapsedTime: number,
                 public type: string,
+                public averageSpeed: number,
+                public maxSpeed: number,
                 public startDate: Date,
                 public track: StravaActivityTrackPoint[] = []) {}
 }

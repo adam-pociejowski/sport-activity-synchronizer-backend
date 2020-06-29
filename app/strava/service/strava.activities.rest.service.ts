@@ -1,6 +1,7 @@
 import { RequestArguments } from "../../core/model/request.arguments.model";
 import { StravaActivity } from "../model/strava.activity.model";
 import { StravaRestService } from "./strava.rest.service";
+import {MetricUtils} from "../../core/util/MetricUtils";
 
 export class StravaActivitiesRestService extends StravaRestService<StravaActivity[]> {
 
@@ -25,6 +26,8 @@ export class StravaActivitiesRestService extends StravaRestService<StravaActivit
                 element.moving_time,
                 element.elapsed_time,
                 element.type,
+                MetricUtils.metersPerSecToKilometersPerHour(element.average_speed),
+                MetricUtils.metersPerSecToKilometersPerHour(element.max_speed),
                 new Date(element.start_date)
             )
         );
