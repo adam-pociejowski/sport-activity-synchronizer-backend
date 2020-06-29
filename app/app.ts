@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import {StravaService} from "./strava/service/strava.service";
 
 const createError = require('http-errors');
 const express = require('express');
@@ -36,7 +35,5 @@ app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
 
-
 module.exports = app;
-
-new StravaService();
+// new StravaService();

@@ -9,10 +9,13 @@ export class StravaActivitiesRestService extends StravaRestService<StravaActivit
         super();
     }
 
-    getActivities = () =>
+    getActivities = (page: number, pageSize: number) =>
         this.get(`athlete/activities`, new RequestArguments(
             {},
-            {},
+            {
+                per_page: pageSize,
+                page: page
+            },
             {
                 Authorization:  this.prepareAuthorizationHeader()
             }));
