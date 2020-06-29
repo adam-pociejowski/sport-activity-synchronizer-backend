@@ -10,16 +10,20 @@ export class StravaRestController {
         this.initRoutes();
     }
 
-    public initRoutes() {
+    private initRoutes = () => {
         this.router.post('/list', this.saveActivities);
         this.router.post('/:id', this.saveActivity);
     }
 
-    saveActivities = (request: Request, response: Response) =>
-        this.stravaService.saveActivitiesPage(+request.query.page, +request.query.pageSize)
-            .then(() => response.send('Activities saved'));
+    private saveActivities = (request: Request, response: Response) =>
+        this.stravaService
+            .saveActivitiesPage(+request.query.page, +request.query.pageSize)
+            .then(() => response.send('Activities saved'))
+            .catch((err: any) => response.send(err));
 
-    saveActivity = (request: Request, response: Response) =>
-        this.stravaService.saveActivity(request.params.id)
-            .then(() => response.send(`Activity ${request.params.id} saved`));
+    private saveActivity = (request: Request, response: Response) =>
+        this.stravaService
+            .saveActivity(request.params.id)
+            .then(() => response.send(`Activity ${request.params.id} saved`))
+            .catch((err: any) => response.send(err));
 }

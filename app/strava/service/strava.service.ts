@@ -27,11 +27,13 @@ export class StravaService extends MongoService<StravaActivity[]> {
     public saveActivitiesPage = (page: number, pageSize: number) =>
         this.stravaActivitiesRestService
             .getActivities(page, pageSize)
-            .then((activities: StravaActivity[]) =>
-                Promise
+            .then((activities: StravaActivity[]) => {
+                console.log(`Found ${activities.length} activities`)
+                return Promise
                     .all(this.prepareActivityTrackPromises(activities))
                     .then((tracks: any[]) =>
-                        this.insertMany(this.appendTracksToActivities(activities, tracks))));
+                        this.insertMany(this.appendTracksToActivities(activities, tracks)));
+            });
 
     private prepareActivityTrackPromises = (activities: StravaActivity[]) =>
         activities
