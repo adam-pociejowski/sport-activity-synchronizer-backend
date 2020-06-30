@@ -87,7 +87,7 @@ spec:
   type: NodePort
   ports:
     - port: 27017
-      targetPort: 27017
+      nodePort: 30036
       protocol: TCP
       name: http
   selector:
