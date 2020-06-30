@@ -9,7 +9,7 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: mongodb
+              serviceName: sport-activity-mongodb
               servicePort: 27017
     - host: sync-sportactivity.apociejowski.pl
       http:
