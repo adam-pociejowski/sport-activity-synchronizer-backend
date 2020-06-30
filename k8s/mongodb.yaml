@@ -81,8 +81,14 @@ metadata:
   labels:
     app: sport-activity-mongodb
 spec:
-  type: ClusterIP
+#  type: ClusterIP
+#  ports:
+#    - port: 27017
+  type: NodePort
   ports:
     - port: 27017
+      targetPort: 27017
+      protocol: TCP
+      name: http
   selector:
     app: sport-activity-mongodb
