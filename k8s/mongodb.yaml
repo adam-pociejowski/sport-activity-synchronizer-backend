@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-config
+  namespace: "sport-activity"
+  labels:
+    app: sport-activity-mongodb
+data:
+  MONGO_INITDB_ROOT_USERNAME: user
+  MONGO_INITDB_ROOT_PASSWORD: password
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: sport-activity-mongodb-pv-volume
+  namespace: "sport-activity"
+  labels:
+    type: local
+    app: sport-activity-mongodb
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sport-activity-mongodb-pv-claim
+  namespace: "sport-activity"
+  labels:
+    app: sport-activity-mongodb
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sport-activity-mongodb
+  namespace: "sport-activity"
+spec:
+  selector:
+    matchLabels:
+      app: sport-activity-mongodb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sport-activity-mongodb
+    spec:
+      containers:
+        - name: sport-activity-mongodb
+          image: mongo:4.2.8
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: mongodb-config
+          volumeMounts:
+            - mountPath: /data/db
+              name: sport-activity-mongodb
+      volumes:
+        - name: sport-activity-mongodb
+          persistentVolumeClaim:
+            claimName: sport-activity-mongodb-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sport-activity-mongodb
+  namespace: "sport-activity"
+  labels:
+    app: sport-activity-mongodb
+spec:
+#  type: ClusterIP
+#  ports:
+#    - port: 27017
+  type: NodePort
+  ports:
+    - port: 27017
+      nodePort: 30036
+      protocol: TCP
+      name: http
+  selector:
+    app: sport-activity-mongodb

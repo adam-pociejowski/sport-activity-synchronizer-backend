@@ -17,7 +17,7 @@ export class StravaRestController {
 
     private saveActivities = (request: Request, response: Response) =>
         this.stravaService
-            .saveActivitiesPage(+request.query.page, +request.query.pageSize)
+            .saveActivitiesPage(+request.query.page!!, +request.query.pageSize!!)
             .then(() => response.send('Activities saved'))
             .catch((err: any) => response.send(err));
 

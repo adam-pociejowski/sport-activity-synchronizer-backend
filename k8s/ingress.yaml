@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "nginx"
+  namespace: "sport-activity"
+spec:
+  rules:
+    - host: mongodb-sportactivity.apociejowski.pl
+      http:
+        paths:
+          - backend:
+              serviceName: sport-activity-mongodb
+              servicePort: 27017
+    - host: sync-sportactivity.apociejowski.pl
+      http:
+        paths:
+          - backend:
+              serviceName: sport-activity-synchronizer-backend
+              servicePort: 3000
