@@ -16,5 +16,5 @@ export abstract class MongoService<T> {
                 }))
     }
 
-    private getMongoClient = () => new MongoClient(process.env.MONGODB_CONNECTION_URL);
+    private getMongoClient = () => new MongoClient(process.env.MONGODB_CONNECTION_URL!!);
 }

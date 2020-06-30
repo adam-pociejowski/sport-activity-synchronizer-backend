@@ -1,20 +1,18 @@
-import { Client } from "node-rest-client-promise";
 import { RequestArguments } from "../model/request.arguments.model";
+const client = require('node-rest-client-promise').Client({});
 
 export abstract class RestClientService<T> {
-    protected client: Client;
     protected apiUrl: string;
 
     protected constructor(apiUrl: string) {
-        this.client = new Client({});
         this.apiUrl = apiUrl;
     }
 
     get = (path: string, args?: RequestArguments) =>
-        this.client
+        client
             .getPromise(`${this.apiUrl}/${path}`, args)
             .then((response: any) => this.mapToResponseData(response.data))
-            .catch((error) => {
+            .catch((error: any) => {
                 console.error(error);
             });
 
