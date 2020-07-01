@@ -8,7 +8,7 @@ export abstract class OAuthProvider {
     protected constructor(private readonly oauthUrl: string,
                           private readonly redirectUrl: string,
                           private readonly credentials: OAuthCredentials) {
-        if (!process.env.DEV_MODE) {
+        if (process.env.MODE === 'prod') {
             this.getAuthorizationCode()
                 .then(() => {
                     console.log('authorization code requested');
