@@ -3,7 +3,7 @@ import { StravaRestService } from "./strava.rest.service";
 import { StravaStreamType } from "../enums/strava.stream.type.enum";
 import { LocationData } from "../../core/model/location.model";
 import { RequestArguments } from "../../core/model/request.arguments.model";
-import {MetricUtils} from "../../core/util/MetricUtils";
+import { MetricUtils } from "../../core/util/MetricUtils";
 
 export class StravaActivityTrackRestService extends StravaRestService<StravaActivityTrackPoint[]> {
 
@@ -12,14 +12,15 @@ export class StravaActivityTrackRestService extends StravaRestService<StravaActi
     }
 
     getActivityTrack = (id: string) =>
-        this.get(`activities/${id}/streams/latlng,time,distance,velocity_smooth`,
-            new RequestArguments(
-                {},
-                {},
-                {
-                    Authorization:  this.prepareAuthorizationHeader()
-                })
-        );
+        this.getAccessToken()
+            .then((accessToken: string) =>
+                this.get(`activities/${id}/streams/latlng,time,distance,velocity_smooth`,
+                    new RequestArguments(
+                        {},
+                        {},
+                        {
+                            Authorization:  accessToken
+                        })));
 
     mapToResponseData = (data: any): StravaActivityTrackPoint[] => {
         let track: StravaActivityTrackPoint[] = [];

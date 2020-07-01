@@ -9,5 +9,6 @@ data:
   STRAVA_API_URL: "https://www:strava:com/api/v3"
   STRAVA_API_OAUTH_CLIENT_ID: "50289"
   STRAVA_API_OAUTH_CLIENT_SECRET: "f5665a278004da7b3f8179b6794a6fcc39a847a2"
-  STRAVA_API_OAUTH_GRANT_TYPE: "authorization_code"
+  STRAVA_OAUTH_REDIRECT_URL: "https://sync-sportactivity.apociejowski.pl/rest/strava/exchange_token"
   MONGODB_CONNECTION_URL: "mongodb://user:password@sport-activity-mongodb:27017"
+  DEV_MODE: "false"
