@@ -37,7 +37,7 @@ export abstract class OAuthProvider {
     private getAuthorizationCode = () =>
         request
             .get(this.oauthUrl+'/authorize'+
-                    '?clientId='+this.credentials.clientId+
+                    '?client_id='+this.credentials.clientId+
                     '&response_type=code'+
                     '&redirect_uri='+this.redirectUrl+
                     '&approval_prompt=auto'+
