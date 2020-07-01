@@ -6,7 +6,7 @@ metadata:
   labels:
     app: nodejs-backend
 data:
-  STRAVA_API_URL: "https://www:strava:com/api/v3"
+  STRAVA_API_URL: "https://www.strava.com/api/v3"
   STRAVA_API_OAUTH_CLIENT_ID: "50289"
   STRAVA_API_OAUTH_CLIENT_SECRET: "f5665a278004da7b3f8179b6794a6fcc39a847a2"
   STRAVA_OAUTH_REDIRECT_URL: "https://sync-sportactivity.apociejowski.pl/rest/strava/exchange_token"
