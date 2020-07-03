@@ -10,9 +10,10 @@ export abstract class OAuthProvider {
                           private readonly credentials: OAuthCredentials) {
         if (process.env.MODE === 'prod') {
             this.getAuthorizationCode()
-                .then(() => {
-                    console.log('authorization code requested');
-                });
+                .then((response: any) => {
+                    console.log('getAuthorizationCode requested', response);
+                })
+                .catch((err: any) => console.log('getAuthorizationCode error', err))
         }
     }
 
