@@ -1,4 +1,11 @@
 version: 2.1
+
+workflows:
+  kubernetes-cluster:
+    jobs:
+      - build:
+          context: KUBERNETES_CLUSTER
+
 jobs:
   build:
     working_directory: ~/monitor-progress-backend
