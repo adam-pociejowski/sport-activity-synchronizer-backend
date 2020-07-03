@@ -30,9 +30,10 @@ export abstract class OAuthProvider {
                     '&grant_type=authorization_code', { json: true })
             .then((response: any) => {
                 this.token = new OAuthToken(response.access_token, new Date(response.expires_at), response.refresh_token);
+                console.log('Access token received by authorization_code');
             })
             .catch((err: any) => console.log(err));
-        }
+        };
 
     private getAuthorizationCode = () =>
         request
