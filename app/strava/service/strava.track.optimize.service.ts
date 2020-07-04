@@ -9,7 +9,7 @@ export class StravaTrackOptimizeService {
     private removePointsWithoutPositionChanged = (stravaActivityTrackPoints: StravaActivityTrackPoint[]) => {
         let filteredPoints: StravaActivityTrackPoint[] = [];
         let timeOffsets: number[] = [];
-        let previousPoint: StravaActivityTrackPoint;
+        let previousPoint: StravaActivityTrackPoint | null = null;
         let startPausePoint: any = null;
         let currentTimeOffset = stravaActivityTrackPoints[0].time;
         stravaActivityTrackPoints
@@ -18,7 +18,7 @@ export class StravaTrackOptimizeService {
                     startPausePoint = previousPoint;
                 } else if (this.isNotPause(startPausePoint) || this.isEndOfPause(startPausePoint, currentPoint)) {
                     if (this.isEndOfPause(startPausePoint, currentPoint)) {
-                        currentTimeOffset += previousPoint.time - startPausePoint.time;
+                        currentTimeOffset += previousPoint!!.time - startPausePoint.time;
                         startPausePoint = null;
                     }
                     timeOffsets.push(currentTimeOffset);
@@ -36,7 +36,7 @@ export class StravaTrackOptimizeService {
     };
 
     private isBeginOfPause = (startPausePoint: StravaActivityTrackPoint,
-                              previousPoint: StravaActivityTrackPoint,
+                              previousPoint: StravaActivityTrackPoint | null,
                               currentPoint: StravaActivityTrackPoint) =>
         previousPoint !== null && startPausePoint === null && previousPoint.distance === currentPoint.distance;
 
