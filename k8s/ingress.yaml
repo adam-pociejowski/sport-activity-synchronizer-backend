@@ -5,15 +5,15 @@ metadata:
   namespace: "sport-activity"
 spec:
   rules:
-    - host: mongodb-sportactivity.apociejowski.pl
+    - host: "mongodb-sportactivity.apociejowski.pl"
       http:
         paths:
           - backend:
-              serviceName: sport-activity-mongodb
+              serviceName: "sport-activity-mongodb"
               servicePort: 27017
-    - host: sync-sportactivity.apociejowski.pl
+    - host: "sync-sportactivity.apociejowski.pl"
       http:
         paths:
           - backend:
-              serviceName: sport-activity-synchronizer-backend
+              serviceName: "sport-activity-synchronizer-backend"
               servicePort: 3000

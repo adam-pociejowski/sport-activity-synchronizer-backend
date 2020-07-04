@@ -11,4 +11,4 @@ data:
   STRAVA_OAUTH_CLIENT_SECRET: "f5665a278004da7b3f8179b6794a6fcc39a847a2"
   STRAVA_OAUTH_REFRESH_TOKEN: "3b7a34366d848186ef2abb723a4657dfa6d1e673"
   STRAVA_OAUTH_REDIRECT_URL: "https://sync-sportactivity.apociejowski.pl/rest/strava/exchange_token"
-  MONGODB_CONNECTION_URL: "mongodb://user:password@sport-activity-mongodb:27017"
+  MONGODB_CONNECTION_URL: "mongodb://user:password@77.55.208.123:30036"

@@ -16,13 +16,13 @@ export class StravaRestController {
         this.router.post('/list', this.saveActivities);
         this.router.post('/:id', this.saveActivity);
         this.router.get('/exchange_token', this.exchangeToken);
-    }
+    };
 
     private exchangeToken = (request: Request, response: Response) => {
         this.oauthProvider
             .getAccessTokenFromAuthorizationCode(request.query.code as string);
         response.send('OK');
-    }
+    };
 
     private saveActivities = (request: Request, response: Response) =>
         this.stravaService
