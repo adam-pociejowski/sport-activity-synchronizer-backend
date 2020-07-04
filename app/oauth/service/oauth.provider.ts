@@ -7,8 +7,9 @@ export abstract class OAuthProvider {
 
     protected constructor(private readonly oauthUrl: string,
                           private readonly redirectUrl: string,
-                          private readonly credentials: OAuthCredentials) {
-        if (process.env.MODE === 'prod') {
+                          private readonly credentials: OAuthCredentials,
+                          private readonly autoRetrieveAccessToken: boolean = false) {
+        if (autoRetrieveAccessToken) {
             this.getAuthorizationCode()
                 .then(() => {
                     console.log('authorization code requested');
@@ -34,16 +35,7 @@ export abstract class OAuthProvider {
             .catch((err: any) => console.log(err));
         }
 
-    private getAuthorizationCode = () =>
-        request
-            .get(this.oauthUrl+'/authorize'+
-                    '?client_id='+this.credentials.clientId+
-                    '&response_type=code'+
-                    '&redirect_uri='+this.redirectUrl+
-                    '&approval_prompt=auto'+
-                    '&scope=activity:read_all,activity:read', {})
-
-    private refreshAccessToken = () =>
+    protected refreshAccessToken = () =>
         request
             .post(this.oauthUrl+'/token'+
                 '?client_id='+this.credentials.clientId+
@@ -54,6 +46,15 @@ export abstract class OAuthProvider {
                 this.token = new OAuthToken(response.access_token, new Date(response.expires_at), response.refresh_token);
                 return this.token;
             })
+
+    private getAuthorizationCode = () =>
+        request
+            .get(this.oauthUrl+'/authorize'+
+                    '?client_id='+this.credentials.clientId+
+                    '&response_type=code'+
+                    '&redirect_uri='+this.redirectUrl+
+                    '&approval_prompt=auto'+
+                    '&scope=activity:read_all,activity:read', {})
 
     private shouldRefreshToken = (token: OAuthToken) =>
         token.accessTokenExpirationDate.getTime() < new Date().getTime() + 1000;
