@@ -18,22 +18,25 @@ export class StravaService extends MongoService<StravaActivity[]> {
     public saveActivity = (activityId: string) =>
         this.stravaActivityRestService
             .getActivity(activityId)
-            .then((activity: StravaActivity) =>
-                Promise
-                    .all(this.prepareActivityTrackPromises([activity]))
-                    .then((tracks: any[]) =>
-                        this.insertMany(this.appendTracksToActivities([activity], tracks))));
+            .then((activity: StravaActivity) => this.processForActivities([activity]))
 
     public saveActivitiesPage = (page: number, pageSize: number) =>
         this.stravaActivitiesRestService
             .getActivities(page, pageSize)
-            .then((activities: StravaActivity[]) => {
-                console.log(`Found ${activities.length} activities`)
-                return Promise
-                    .all(this.prepareActivityTrackPromises(activities))
-                    .then((tracks: any[]) =>
-                        this.insertMany(this.appendTracksToActivities(activities, tracks)));
+            .then((activities: StravaActivity[]) => this.processForActivities(activities));
+
+    private processForActivities = (activities: StravaActivity[]) => {
+        console.log(`Found ${activities.length} activities`)
+        Promise
+            .all(this.prepareActivityTrackPromises(activities))
+            .then((tracks: any[]) => {
+                try {
+                    this.insertMany(this.appendTracksToActivities(activities, tracks))
+                } catch (e) {
+                    console.log('Exception while trying to save activities', e)
+                }
             });
+    }
 
     private prepareActivityTrackPromises = (activities: StravaActivity[]) =>
         activities

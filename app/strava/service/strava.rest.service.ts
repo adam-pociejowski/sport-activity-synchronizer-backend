@@ -1,15 +1,15 @@
-import { OAuthRestService } from "../../oauth/service/oauth.rest.service";
-import { OAuthCredentials } from "../../oauth/model/oauth.credentials.model";
+import { StravaOAuthProvider } from "./strava.oauth.provider";
+import { RestClientService } from "../../core/service/rest.client.service";
+import { OAuthToken } from "../../oauth/model/oauth.token.model";
 
-export abstract class StravaRestService<T> extends OAuthRestService<T> {
+export abstract class StravaRestService<T> extends RestClientService<T> {
+    private oauthProvider = StravaOAuthProvider.getInstance();
 
     protected constructor() {
-        super(process.env.STRAVA_API_URL!!,
-            new OAuthCredentials(
-                process.env.STRAVA_API_OAUTH_CLIENT_ID!!,
-                process.env.STRAVA_API_OAUTH_CLIENT_SECRET!!,
-                process.env.STRAVA_API_OAUTH_GRANT_TYPE!!
-            )
-        );
+        super(process.env.STRAVA_API_URL!!);
     }
+
+    protected getAccessToken = () =>
+        this.oauthProvider.getAccessToken()
+            .then((token: OAuthToken) => `Bearer ${token.accessToken}`);
 }

@@ -1,7 +1,7 @@
 import { RequestArguments } from "../../core/model/request.arguments.model";
 import { StravaActivity } from "../model/strava.activity.model";
 import { StravaRestService } from "./strava.rest.service";
-import {MetricUtils} from "../../core/util/MetricUtils";
+import { MetricUtils } from "../../core/util/MetricUtils";
 
 export class StravaActivityRestService extends StravaRestService<StravaActivity> {
 
@@ -10,12 +10,14 @@ export class StravaActivityRestService extends StravaRestService<StravaActivity>
     }
 
     getActivity = (id: string) =>
-        this.get(`activities/${id}`, new RequestArguments(
-            {},
-            {},
-            {
-                Authorization:  this.prepareAuthorizationHeader()
-            }));
+        this.getAccessToken()
+            .then((accessToken: string) =>
+                this.get(`activities/${id}`, new RequestArguments(
+                    {},
+                    {},
+                    {
+                        Authorization:  accessToken
+                    })));
 
     mapToResponseData = (data: any): StravaActivity =>
         new StravaActivity(

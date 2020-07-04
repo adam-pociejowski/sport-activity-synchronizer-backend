@@ -6,8 +6,9 @@ metadata:
   labels:
     app: nodejs-backend
 data:
-  STRAVA_API_URL: "https://www:strava:com/api/v3"
-  STRAVA_API_OAUTH_CLIENT_ID: "50289"
-  STRAVA_API_OAUTH_CLIENT_SECRET: "f5665a278004da7b3f8179b6794a6fcc39a847a2"
-  STRAVA_API_OAUTH_GRANT_TYPE: "authorization_code"
-  MONGODB_CONNECTION_URL: "mongodb://user:password@mongodb:27017"
+  STRAVA_API_URL: "https://www.strava.com/api/v3"
+  STRAVA_OAUTH_CLIENT_ID: "50289"
+  STRAVA_OAUTH_CLIENT_SECRET: "f5665a278004da7b3f8179b6794a6fcc39a847a2"
+  STRAVA_OAUTH_REFRESH_TOKEN: "3b7a34366d848186ef2abb723a4657dfa6d1e673"
+  STRAVA_OAUTH_REDIRECT_URL: "https://sync-sportactivity.apociejowski.pl/rest/strava/exchange_token"
+  MONGODB_CONNECTION_URL: "mongodb://user:password@77.55.208.123:30036"
