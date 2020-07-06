@@ -12,6 +12,7 @@ export abstract class MongoService<T> {
                 .db(this.databaseName)
                 .collection(this.collectionName)
                 .insertMany(activities, function (err: any, result: any) {
+                    console.log(`${activities.length} activities saved`)
                     mongoClient.close();
                 }))
     }
