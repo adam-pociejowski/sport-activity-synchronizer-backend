@@ -1,57 +1,33 @@
 import { StravaActivityTrackPoint } from "../model/strava.activity.track.point.model";
+import { StravaActivityTrackStream } from "../model/strava.activity.track.stream.model";
+import { ObjectUtils } from "../../core/util/ObjectUtils";
 
 export class StravaTrackOptimizeService {
 
-    public optimize = (track: StravaActivityTrackPoint[]) =>
-        this.removePointsWithoutPositionChanged(
-            this.removeElementsBeforeStart(track));
-
-    private removePointsWithoutPositionChanged = (stravaActivityTrackPoints: StravaActivityTrackPoint[]) => {
+    public optimize = (streams: StravaActivityTrackStream[]) => {
         let filteredPoints: StravaActivityTrackPoint[] = [];
-        let timeOffsets: number[] = [];
-        let previousPoint: StravaActivityTrackPoint | null = null;
-        let startPausePoint: any = null;
-        let currentTimeOffset = stravaActivityTrackPoints[0].time;
-        stravaActivityTrackPoints
-            .forEach((currentPoint: StravaActivityTrackPoint) => {
-                if (this.isBeginOfPause(startPausePoint, previousPoint, currentPoint)) {
-                    startPausePoint = previousPoint;
-                } else if (this.isNotPause(startPausePoint) || this.isEndOfPause(startPausePoint, currentPoint)) {
-                    if (this.isEndOfPause(startPausePoint, currentPoint)) {
-                        currentTimeOffset += previousPoint!!.time - startPausePoint.time;
-                        startPausePoint = null;
-                    }
-                    timeOffsets.push(currentTimeOffset);
-                    filteredPoints.push(currentPoint);
+        let currentTimeOffset = 0;
+        for (let index = 1; index < streams.length; index++) {
+            let currentStream = ObjectUtils.copy(streams[index]);
+            let previousPoint = ObjectUtils.copy(streams[index - 1].point);
+            if (currentStream.moving) {
+                if (this.isFirstPoint(filteredPoints)) {
+                    this.addPointWithCorrectTime(filteredPoints, previousPoint, currentTimeOffset);
                 }
-                previousPoint = currentPoint;
-            });
-        return this.appendTimeOffsets(filteredPoints, timeOffsets);
+                this.addPointWithCorrectTime(filteredPoints, currentStream.point, currentTimeOffset);
+            } else {
+                currentTimeOffset += currentStream.point.time - previousPoint.time;
+            }
+        }
+        return filteredPoints;
     };
 
-    private removeElementsBeforeStart = (track : StravaActivityTrackPoint[]) => {
-        let firstPointGreaterThanZero = track
-            .find((element: StravaActivityTrackPoint) => element.distance > 0);
-        return track.slice(track.indexOf(firstPointGreaterThanZero!!) - 1);
-    };
+    private addPointWithCorrectTime = (filteredPoints: StravaActivityTrackPoint[],
+                                       point: StravaActivityTrackPoint,
+                                       timeOffset: number) => {
+        point.time -= timeOffset;
+        filteredPoints.push(point);
+    }
 
-    private isBeginOfPause = (startPausePoint: StravaActivityTrackPoint,
-                              previousPoint: StravaActivityTrackPoint | null,
-                              currentPoint: StravaActivityTrackPoint) =>
-        previousPoint !== null && startPausePoint === null && previousPoint.distance === currentPoint.distance;
-
-    private isEndOfPause = (startPausePoint: StravaActivityTrackPoint,
-                            currentPoint: StravaActivityTrackPoint) =>
-        startPausePoint !== null && startPausePoint.distance < currentPoint.distance;
-
-    private isNotPause = (startPausePoint: StravaActivityTrackPoint) =>
-        startPausePoint === null;
-
-    private appendTimeOffsets = (filteredPoints: StravaActivityTrackPoint[],
-                                 timeOffsets: number[]) =>
-        filteredPoints
-            .map((point: StravaActivityTrackPoint, index: number) => {
-                point.time -= timeOffsets[index];
-                return point;
-            });
+    private isFirstPoint= (filteredPoints: StravaActivityTrackPoint[]) => filteredPoints.length == 0;
 }
